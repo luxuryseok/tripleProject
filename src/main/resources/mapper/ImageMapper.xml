@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ryuProject.tripleProject.mapper.ImageMapper">
+
+    <insert  id="inputImage" parameterType="RequestDTO">
+        INSERT INTO IMAGE(REVIEW_ID, ATTACHED_PHOTO_ID) VALUES
+        <foreach collection="attachedPhotoIds" item="item" separator=",">
+            (
+            #{reviewId},
+            #{item}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getImageByReviewCount" resultType="ImageDTO" parameterType="RequestDTO">
+        SELECT count(attached_photo_id) as imageByReviewCount
+        FROM image
+        WHERE review_id = #{reviewId}
+    </select>
+
+    <delete id="deleteImage" parameterType="RequestDTO">
+        DELETE FROM image WHERE review_id = #{reviewId}
+    </delete>
+
+</mapper>

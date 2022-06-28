@@ -2,12 +2,15 @@ package com.ryuProject.tripleProject.service.impl;
 
 import com.ryuProject.tripleProject.dto.RequestDTO;
 import com.ryuProject.tripleProject.dto.UserPointDTO;
+import com.ryuProject.tripleProject.enums.ErrorMessage;
+import com.ryuProject.tripleProject.exception.CustomException;
 import com.ryuProject.tripleProject.service.MainService;
 import com.ryuProject.tripleProject.service.subService.ImageService;
 import com.ryuProject.tripleProject.service.subService.ReviewService;
 import com.ryuProject.tripleProject.service.subService.UserPointService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @Service
 public class MainServiceImpl implements MainService {
@@ -90,5 +93,16 @@ public class MainServiceImpl implements MainService {
         imageService.deleteImage(requestDTO);
         //리뷰삭제
         reviewService.deleteReview(requestDTO);
+    }
+
+    /**
+     * 포인트 조회
+     * @param userId
+     * @return
+     */
+    @Override
+    public Integer getUserPoint(String userId) {
+
+        return userPointService.getUserPoint(userId);
     }
 }

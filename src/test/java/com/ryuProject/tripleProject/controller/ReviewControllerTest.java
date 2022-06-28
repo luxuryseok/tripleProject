@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ryuProject.tripleProject.dto.RequestDTO;
 import com.ryuProject.tripleProject.enums.ActionType;
+import com.ryuProject.tripleProject.exception.CustomException;
 import com.ryuProject.tripleProject.service.MainService;
+import com.ryuProject.tripleProject.service.subService.UserPointService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +50,7 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("CONTROLLER 테스트")
+    @DisplayName("events api 테스트")
     void events() throws Exception {
 
         //given
@@ -78,14 +80,24 @@ class ReviewControllerTest {
     }
 
     @Test
-    @DisplayName("POINT 테스트 코드 미작성")
+    @DisplayName("points api 테스트")
     void points() throws Exception {
+
+        List<String> attachedPhotoIds = new ArrayList<>();
+        attachedPhotoIds.add("e4d1a64e-a531-46de-88d0-ff0ed70c0bb8");
+        attachedPhotoIds.add("afb0cef2-851d-4a50-bb07-9cc15cbdc332");
         RequestDTO requestDTO = RequestDTO.builder()
+                .reviewId("240a0658-dc5f-4878-9381-ebb7b2667772")
                 .userId("e47a2bd8-f4ad-4ef3-9fd1-299626862dbd")
+                .action(ActionType.ADD)
+                .type("REVIEW")
+                .content("좋아요!")
+                .placeId("2e4baf1c-5acb-4efb-a1af-eddada31b00f")
                 .build();
 
-        mockMvc.perform(get("/POST/points/")
-                .param("id","e47a2bd8-f4ad-4ef3-9fd1-299626862dbd"))
+        mainService.create(requestDTO);
+
+        mockMvc.perform(get("/POST/points/3ede0ef2-92b7-4817-a5f3-0c575361f745"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -101,7 +113,7 @@ class ReviewControllerTest {
             RequestDTO requestDTO = RequestDTO.builder()
                     .reviewId("240a0658-dc5f-4878-9381-ebb7b2667772")
                     .userId("3ede0ef2-92b7-4817-a5f3-0c575361f745")
-                    .action(ActionType.valueOf(""))
+                    .action(ActionType.valueOf("AAA"))
                     .type("REVIEW")
                     .content("좋아요!")
                     .placeId("2e4baf1c-5acb-4efb-a1af-eddada31b00f")

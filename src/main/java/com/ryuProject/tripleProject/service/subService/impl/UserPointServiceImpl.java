@@ -3,9 +3,12 @@ package com.ryuProject.tripleProject.service.subService.impl;
 import com.ryuProject.tripleProject.dto.RequestDTO;
 import com.ryuProject.tripleProject.dto.UserPointDTO;
 import com.ryuProject.tripleProject.enums.BusinessMessage;
+import com.ryuProject.tripleProject.enums.ErrorMessage;
+import com.ryuProject.tripleProject.exception.CustomException;
 import com.ryuProject.tripleProject.mapper.UserPointMapper;
 import com.ryuProject.tripleProject.service.subService.UserPointService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 @Service
 public class UserPointServiceImpl implements UserPointService {
@@ -41,14 +44,18 @@ public class UserPointServiceImpl implements UserPointService {
 
     @Override
     public void retrieveAllPoint(UserPointDTO userPointDTO) {
-        int userPoint = userPointMapper.getUserReviewSumPoint(userPointDTO);
+        Integer userPoint = userPointMapper.getUserReviewSumPoint(userPointDTO);
         userPointDTO.retrieveAllPoint(BusinessMessage.RETRIEVE_ALL_POINT, userPoint);
         savePoint(userPointDTO);
     }
 
     @Override
     public Integer getUserPoint(String userId) {
-        return userPointMapper.getUserSumPoint(userId);
+        Integer result = userPointMapper.getUserSumPoint(userId);
+        if(ObjectUtils.isEmpty(result) ){
+            throw new CustomException(ErrorMessage.IS_NOT_USER_POINT);
+        }
+        return result;
     }
 
     @Override

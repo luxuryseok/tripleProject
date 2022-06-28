@@ -17,7 +17,8 @@ public enum ErrorMessage {
     NOT_EXISTS_ACTION_TYPE("존재하지 않는 ACTION TYPE 입니다."),
     //다른 작성자가 수정/삭제 할 수 없는 경우
     IS_WRITTEN_USER_MODIFY("작성자만 수정할 수 있습니다."),
-    IS_WRITTEN_USER_DELETE("작성자만 삭제할 수 있습니다.")
+    IS_WRITTEN_USER_DELETE("작성자만 삭제할 수 있습니다."),
+    IS_NOT_USER_POINT("포인트 조회 결과가 없습니다.")
     ;
 
     private final String message;

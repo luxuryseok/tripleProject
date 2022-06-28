@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @Slf4j
 @RequestMapping("/POST")
@@ -29,8 +31,12 @@ public class ReviewController {
     @PostMapping("/events")
     public ResponseEntity<?> events(@RequestBody RequestDTO requestDTO) throws IllegalArgumentException{
         ActionType actionType = requestDTO.getAction();
-        //들어온 요청에 대해 requestDto로 값을 받음
-        //action 컬럼에 대해 분기처리
+
+        //action 타입과 다른 경우 null로 리턴
+        if(Objects.isNull(actionType)){
+            throw new CustomException(ErrorMessage.NOT_EXISTS_ACTION_TYPE);
+        }
+
         switch (actionType){
             case ADD:
                 mainService.create(requestDTO);
@@ -56,6 +62,6 @@ public class ReviewController {
     @GetMapping("/points/{id}")
     public ResponseEntity<?> points(@PathVariable(name="id") String userId){
 
-        return ResponseEntity.ok().body(userPointService.getUserPoint(userId));
+        return ResponseEntity.ok().body(mainService.getUserPoint(userId));
     }
 }

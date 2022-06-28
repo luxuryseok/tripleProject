@@ -8,4 +8,6 @@ public interface MainService {
     void modify(RequestDTO requestDTO);
 
     void delete(RequestDTO requestDTO);
+
+    Integer getUserPoint(String userId);
 }
